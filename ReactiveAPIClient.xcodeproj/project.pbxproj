@@ -7,10 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22C65EA218F24D19000D781A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA118F24D19000D781A /* Cocoa.framework */; };
+		227555DB18F24E840060CBAF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 227555D918F24E840060CBAF /* InfoPlist.strings */; };
+		227555DD18F24E840060CBAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 227555DC18F24E840060CBAF /* main.m */; };
+		227555E118F24E840060CBAF /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 227555DF18F24E840060CBAF /* Credits.rtf */; };
+		227555E418F24E840060CBAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 227555E318F24E840060CBAF /* AppDelegate.m */; };
+		227555E718F24E840060CBAF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227555E518F24E840060CBAF /* MainMenu.xib */; };
+		227555E918F24E840060CBAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 227555E818F24E840060CBAF /* Images.xcassets */; };
+		227555EF18F24E840060CBAF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 225B3B1118F2085D00652B48 /* XCTest.framework */; };
+		227555F818F24E840060CBAF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 227555F618F24E840060CBAF /* InfoPlist.strings */; };
+		2275560118F24EA50060CBAF /* ReactiveAPIClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA018F24D19000D781A /* ReactiveAPIClient.framework */; };
+		2275560318F250B00060CBAF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA418F24D19000D781A /* Foundation.framework */; };
+		2275560418F250B70060CBAF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA418F24D19000D781A /* Foundation.framework */; };
+		2275560718F250FC0060CBAF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA618F24D19000D781A /* AppKit.framework */; };
+		2275560818F251030060CBAF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA618F24D19000D781A /* AppKit.framework */; };
 		22C65EAC18F24D19000D781A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22C65EAA18F24D19000D781A /* InfoPlist.strings */; };
 		22C65EB618F24D19000D781A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 225B3B1118F2085D00652B48 /* XCTest.framework */; };
-		22C65EB718F24D1A000D781A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA118F24D19000D781A /* Cocoa.framework */; };
 		22C65EBA18F24D1A000D781A /* ReactiveAPIClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C65EA018F24D19000D781A /* ReactiveAPIClient.framework */; };
 		22C65EC018F24D1A000D781A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22C65EBE18F24D1A000D781A /* InfoPlist.strings */; };
 		22C65ECA18F24D48000D781A /* InMemoryAPIClientSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C65EC918F24D48000D781A /* InMemoryAPIClientSpecs.m */; };
@@ -24,6 +35,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		227555F118F24E840060CBAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 225B3AF518F2085D00652B48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 227555D318F24E840060CBAF;
+			remoteInfo = ReactiveAPIClientExample;
+		};
 		22C65EB818F24D1A000D781A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 225B3AF518F2085D00652B48 /* Project object */;
@@ -35,12 +53,22 @@
 
 /* Begin PBXFileReference section */
 		222EE6678EB74AC195C7E703 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		225B3B0318F2085D00652B48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		225B3B1118F2085D00652B48 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		227555D418F24E840060CBAF /* ReactiveAPIClientExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactiveAPIClientExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		227555D818F24E840060CBAF /* ReactiveAPIClientExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReactiveAPIClientExample-Info.plist"; sourceTree = "<group>"; };
+		227555DA18F24E840060CBAF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		227555DC18F24E840060CBAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		227555DE18F24E840060CBAF /* ReactiveAPIClientExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactiveAPIClientExample-Prefix.pch"; sourceTree = "<group>"; };
+		227555E018F24E840060CBAF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		227555E218F24E840060CBAF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		227555E318F24E840060CBAF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		227555E618F24E840060CBAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		227555E818F24E840060CBAF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		227555EE18F24E840060CBAF /* ReactiveAPIClientExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactiveAPIClientExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		227555F518F24E840060CBAF /* ReactiveAPIClientExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReactiveAPIClientExampleTests-Info.plist"; sourceTree = "<group>"; };
+		227555F718F24E840060CBAF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22C65EA018F24D19000D781A /* ReactiveAPIClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactiveAPIClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		22C65EA118F24D19000D781A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		22C65EA418F24D19000D781A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		22C65EA518F24D19000D781A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		22C65EA618F24D19000D781A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		22C65EA918F24D19000D781A /* ReactiveAPIClient-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReactiveAPIClient-Info.plist"; sourceTree = "<group>"; };
 		22C65EAB18F24D19000D781A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -60,11 +88,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		227555D118F24E840060CBAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2275560718F250FC0060CBAF /* AppKit.framework in Frameworks */,
+				2275560118F24EA50060CBAF /* ReactiveAPIClient.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227555EB18F24E840060CBAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2275560818F251030060CBAF /* AppKit.framework in Frameworks */,
+				227555EF18F24E840060CBAF /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22C65E9C18F24D19000D781A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22C65EA218F24D19000D781A /* Cocoa.framework in Frameworks */,
+				2275560318F250B00060CBAF /* Foundation.framework in Frameworks */,
 				A329D4D0CDF647B1A8CE29CC /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,8 +119,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2275560418F250B70060CBAF /* Foundation.framework in Frameworks */,
 				22C65EBA18F24D1A000D781A /* ReactiveAPIClient.framework in Frameworks */,
-				22C65EB718F24D1A000D781A /* Cocoa.framework in Frameworks */,
 				22C65EB618F24D19000D781A /* XCTest.framework in Frameworks */,
 				481BF37DCCEE4F3D87B46B04 /* libPods-ReactiveAPIClientTests.a in Frameworks */,
 			);
@@ -88,6 +134,8 @@
 			children = (
 				22C65EA718F24D19000D781A /* ReactiveAPIClient */,
 				22C65EBB18F24D1A000D781A /* ReactiveAPIClientTests */,
+				227555D618F24E840060CBAF /* ReactiveAPIClientExample */,
+				227555F318F24E840060CBAF /* ReactiveAPIClientExampleTests */,
 				225B3AFF18F2085D00652B48 /* Frameworks */,
 				225B3AFE18F2085D00652B48 /* Products */,
 				222EE6678EB74AC195C7E703 /* Pods.xcconfig */,
@@ -100,6 +148,8 @@
 			children = (
 				22C65EA018F24D19000D781A /* ReactiveAPIClient.framework */,
 				22C65EB518F24D19000D781A /* ReactiveAPIClientTests.xctest */,
+				227555D418F24E840060CBAF /* ReactiveAPIClientExample.app */,
+				227555EE18F24E840060CBAF /* ReactiveAPIClientExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,24 +157,54 @@
 		225B3AFF18F2085D00652B48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				225B3B0318F2085D00652B48 /* Foundation.framework */,
 				225B3B1118F2085D00652B48 /* XCTest.framework */,
+				22C65EA418F24D19000D781A /* Foundation.framework */,
+				22C65EA618F24D19000D781A /* AppKit.framework */,
 				9596B10A5EE04200BB158CFC /* libPods.a */,
 				6132083DE74F4CB888CCBD29 /* libPods-ReactiveAPIClientTests.a */,
-				22C65EA118F24D19000D781A /* Cocoa.framework */,
-				22C65EA318F24D19000D781A /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		22C65EA318F24D19000D781A /* Other Frameworks */ = {
+		227555D618F24E840060CBAF /* ReactiveAPIClientExample */ = {
 			isa = PBXGroup;
 			children = (
-				22C65EA418F24D19000D781A /* Foundation.framework */,
-				22C65EA518F24D19000D781A /* CoreData.framework */,
-				22C65EA618F24D19000D781A /* AppKit.framework */,
+				227555E218F24E840060CBAF /* AppDelegate.h */,
+				227555E318F24E840060CBAF /* AppDelegate.m */,
+				227555E518F24E840060CBAF /* MainMenu.xib */,
+				227555E818F24E840060CBAF /* Images.xcassets */,
+				227555D718F24E840060CBAF /* Supporting Files */,
 			);
-			name = "Other Frameworks";
+			path = ReactiveAPIClientExample;
+			sourceTree = "<group>";
+		};
+		227555D718F24E840060CBAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				227555D818F24E840060CBAF /* ReactiveAPIClientExample-Info.plist */,
+				227555D918F24E840060CBAF /* InfoPlist.strings */,
+				227555DC18F24E840060CBAF /* main.m */,
+				227555DE18F24E840060CBAF /* ReactiveAPIClientExample-Prefix.pch */,
+				227555DF18F24E840060CBAF /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		227555F318F24E840060CBAF /* ReactiveAPIClientExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				227555F418F24E840060CBAF /* Supporting Files */,
+			);
+			path = ReactiveAPIClientExampleTests;
+			sourceTree = "<group>";
+		};
+		227555F418F24E840060CBAF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				227555F518F24E840060CBAF /* ReactiveAPIClientExampleTests-Info.plist */,
+				227555F618F24E840060CBAF /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		22C65EA718F24D19000D781A /* ReactiveAPIClient */ = {
@@ -184,6 +264,41 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		227555D318F24E840060CBAF /* ReactiveAPIClientExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 227555FB18F24E840060CBAF /* Build configuration list for PBXNativeTarget "ReactiveAPIClientExample" */;
+			buildPhases = (
+				227555D018F24E840060CBAF /* Sources */,
+				227555D118F24E840060CBAF /* Frameworks */,
+				227555D218F24E840060CBAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactiveAPIClientExample;
+			productName = ReactiveAPIClientExample;
+			productReference = 227555D418F24E840060CBAF /* ReactiveAPIClientExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		227555ED18F24E840060CBAF /* ReactiveAPIClientExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 227555FE18F24E840060CBAF /* Build configuration list for PBXNativeTarget "ReactiveAPIClientExampleTests" */;
+			buildPhases = (
+				227555EA18F24E840060CBAF /* Sources */,
+				227555EB18F24E840060CBAF /* Frameworks */,
+				227555EC18F24E840060CBAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				227555F218F24E840060CBAF /* PBXTargetDependency */,
+			);
+			name = ReactiveAPIClientExampleTests;
+			productName = ReactiveAPIClientExampleTests;
+			productReference = 227555EE18F24E840060CBAF /* ReactiveAPIClientExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		22C65E9F18F24D19000D781A /* ReactiveAPIClient */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22C65EC318F24D1A000D781A /* Build configuration list for PBXNativeTarget "ReactiveAPIClient" */;
@@ -233,6 +348,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Sam Goldman";
 				TargetAttributes = {
+					227555ED18F24E840060CBAF = {
+						TestTargetID = 22C65E9F18F24D19000D781A;
+					};
 					22C65EB418F24D19000D781A = {
 						TestTargetID = 22C65E9F18F24D19000D781A;
 					};
@@ -244,6 +362,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 225B3AF418F2085D00652B48;
 			productRefGroup = 225B3AFE18F2085D00652B48 /* Products */;
@@ -252,11 +371,32 @@
 			targets = (
 				22C65E9F18F24D19000D781A /* ReactiveAPIClient */,
 				22C65EB418F24D19000D781A /* ReactiveAPIClientTests */,
+				227555D318F24E840060CBAF /* ReactiveAPIClientExample */,
+				227555ED18F24E840060CBAF /* ReactiveAPIClientExampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		227555D218F24E840060CBAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227555DB18F24E840060CBAF /* InfoPlist.strings in Resources */,
+				227555E918F24E840060CBAF /* Images.xcassets in Resources */,
+				227555E118F24E840060CBAF /* Credits.rtf in Resources */,
+				227555E718F24E840060CBAF /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227555EC18F24E840060CBAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227555F818F24E840060CBAF /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22C65E9E18F24D19000D781A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,6 +479,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		227555D018F24E840060CBAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227555E418F24E840060CBAF /* AppDelegate.m in Sources */,
+				227555DD18F24E840060CBAF /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		227555EA18F24E840060CBAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22C65E9B18F24D19000D781A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -359,6 +515,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		227555F218F24E840060CBAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 227555D318F24E840060CBAF /* ReactiveAPIClientExample */;
+			targetProxy = 227555F118F24E840060CBAF /* PBXContainerItemProxy */;
+		};
 		22C65EB918F24D1A000D781A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 22C65E9F18F24D19000D781A /* ReactiveAPIClient */;
@@ -367,6 +528,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		227555D918F24E840060CBAF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227555DA18F24E840060CBAF /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		227555DF18F24E840060CBAF /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227555E018F24E840060CBAF /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		227555E518F24E840060CBAF /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227555E618F24E840060CBAF /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		227555F618F24E840060CBAF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				227555F718F24E840060CBAF /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		22C65EAA18F24D19000D781A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -456,6 +649,78 @@
 			};
 			name = Release;
 		};
+		227555FC18F24E840060CBAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 222EE6678EB74AC195C7E703 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactiveAPIClientExample/ReactiveAPIClientExample-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ReactiveAPIClientExample/ReactiveAPIClientExample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		227555FD18F24E840060CBAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 222EE6678EB74AC195C7E703 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactiveAPIClientExample/ReactiveAPIClientExample-Prefix.pch";
+				INFOPLIST_FILE = "ReactiveAPIClientExample/ReactiveAPIClientExample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		227555FF18F24E840060CBAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactiveAPIClient.framework/Versions/A/ReactiveAPIClient";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactiveAPIClientExample/ReactiveAPIClientExample-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ReactiveAPIClientExampleTests/ReactiveAPIClientExampleTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		2275560018F24E840060CBAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactiveAPIClient.framework/Versions/A/ReactiveAPIClient";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactiveAPIClientExample/ReactiveAPIClientExample-Prefix.pch";
+				INFOPLIST_FILE = "ReactiveAPIClientExampleTests/ReactiveAPIClientExampleTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		22C65EC418F24D1A000D781A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 222EE6678EB74AC195C7E703 /* Pods.xcconfig */;
@@ -542,6 +807,24 @@
 			buildConfigurations = (
 				225B3B1F18F2085D00652B48 /* Debug */,
 				225B3B2018F2085D00652B48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		227555FB18F24E840060CBAF /* Build configuration list for PBXNativeTarget "ReactiveAPIClientExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				227555FC18F24E840060CBAF /* Debug */,
+				227555FD18F24E840060CBAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		227555FE18F24E840060CBAF /* Build configuration list for PBXNativeTarget "ReactiveAPIClientExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				227555FF18F24E840060CBAF /* Debug */,
+				2275560018F24E840060CBAF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
