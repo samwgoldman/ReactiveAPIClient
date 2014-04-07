@@ -9,10 +9,21 @@ SpecBegin(InMemoryAPIClient)
 describe(@"InMemoryAPIClient", ^{
     it(@"lists projects", ^AsyncBlock {
         id<APIClient> client = [[InMemoryAPIClient alloc] init];
-        RACSignal *addProjectOne = [client addProjectNamed:@"Example One"];
-        RACSignal *addProjectTwo = [client addProjectNamed:@"Project Two"];
 
-        RACSignal *projects = [[[[client
+        int numberOfProjects = 10;
+        NSMutableArray *createSignals = [NSMutableArray arrayWithCapacity:numberOfProjects];
+        for (int i = 0; i < numberOfProjects; i++) {
+            NSString *name = [NSString stringWithFormat:@"Project %d", i];
+            [createSignals addObject:[client addProjectNamed:name]];
+        }
+
+        RACSignal *createProjects = [[RACSignal
+            combineLatest:createSignals]
+            map:^NSSet *(RACTuple *tuple) {
+                return [NSSet setWithArray:tuple.allObjects];
+            }];
+
+        RACSignal *listProjects = [[[[client
             projects]
             scanWithStart:@[]
             reduce:^NSArray *(NSArray *acc, NSArray *projectSignals) {
@@ -26,11 +37,11 @@ describe(@"InMemoryAPIClient", ^{
             }];
 
         [[[RACSignal
-            combineLatest:@[projects, addProjectOne, addProjectTwo]]
+            combineLatest:@[listProjects, createProjects]]
             deliverOn:RACScheduler.mainThreadScheduler]
             subscribeNext:^(RACTuple *next) {
-                RACTupleUnpack(NSSet *projects, Project *projectOne, Project *projectTwo) = next;
-                expect(projects).to.equal([NSSet setWithObjects:projectOne, projectTwo, nil]);
+                RACTupleUnpack(NSSet *listedProjects, NSSet *createdProjects) = next;
+                expect(listedProjects).to.equal(createdProjects);
                 done();
             }];
     });
