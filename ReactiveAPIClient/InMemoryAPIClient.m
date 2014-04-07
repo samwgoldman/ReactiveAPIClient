@@ -3,6 +3,7 @@
 
 @interface InMemoryAPIClient ()
 @property (nonatomic, strong) RACSubject *addedProjects;
+@property (nonatomic, strong) RACSubject *deletedProjects;
 @property (readonly) int32_t nextID;
 @end
 
@@ -15,6 +16,7 @@
     self = [super init];
     if (self) {
         self.addedProjects = [RACSubject subject];
+        self.deletedProjects = [RACSubject subject];
         _nextID = 0;
     }
     return self;
@@ -23,14 +25,25 @@
 - (RACSignal *)projects
 {
     return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSMutableDictionary *projectSubjects = [NSMutableDictionary dictionary];
+
         [self.addedProjects subscribeNext:^(NSArray *projects) {
             NSMutableArray *projectSignals = [NSMutableArray arrayWithCapacity:projects.count];
 
             for (Project *project in projects) {
-                [projectSignals addObject:[RACSignal return:project]];
+                RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
+                [projectSubjects setObject:subject forKey:project];
+                [projectSignals addObject:subject];
             }
 
             [subscriber sendNext:projectSignals];
+        }];
+
+        [self.deletedProjects subscribeNext:^(NSArray *projects) {
+            for (Project *project in projects) {
+                RACSubject *subject = [projectSubjects objectForKey:project];
+                [subject sendCompleted];
+            }
         }];
 
         return nil;
@@ -46,6 +59,20 @@
         usleep(arc4random_uniform(1000));
 
         [self.addedProjects sendNext:@[project]];
+
+        [subscriber sendNext:project];
+        [subscriber sendCompleted];
+
+        return nil;
+    }] subscribeOn:RACScheduler.scheduler] replayLazily];
+}
+
+- (RACSignal *)deleteProject:(Project *)project
+{
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        usleep(arc4random_uniform(1000));
+
+        [self.deletedProjects sendNext:@[project]];
 
         [subscriber sendNext:project];
         [subscriber sendCompleted];

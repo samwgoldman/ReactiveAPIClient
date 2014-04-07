@@ -45,6 +45,27 @@ describe(@"InMemoryAPIClient", ^{
                 done();
             }];
     });
+
+    it(@"completes listed signals when projects are deleted", ^AsyncBlock {
+        id<APIClient> client = [[InMemoryAPIClient alloc] init];
+
+        RACSignal *listProjects = [client projects];
+        RACSignal *createProject = [client addProjectNamed:@"Example Project"];
+
+        [[[[RACSignal
+            combineLatest:@[listProjects, createProject]]
+            take:1]
+            flattenMap:^RACStream *(RACTuple *update) {
+                RACTupleUnpack(NSArray *projectSignals, Project *project) = update;
+                RACSignal *projects = [RACSignal combineLatest:projectSignals];
+                RACSignal *deleteProject = [client deleteProject:project];
+
+                return [projects combineLatestWith:deleteProject];
+            }]
+            subscribeCompleted:^{
+                done();
+            }];
+    });
 });
 
 SpecEnd
