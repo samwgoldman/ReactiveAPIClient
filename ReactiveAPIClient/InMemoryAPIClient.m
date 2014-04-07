@@ -2,7 +2,7 @@
 #import "Project.h"
 
 @interface InMemoryAPIClient ()
-@property (nonatomic, strong) NSMutableArray *projects;
+@property (nonatomic, strong) RACSubject *addedProjects;
 @property (readonly) int32_t nextID;
 @end
 
@@ -14,7 +14,7 @@
 {
     self = [super init];
     if (self) {
-        self.projects = [NSMutableArray array];
+        self.addedProjects = [RACSubject subject];
         _nextID = 0;
     }
     return self;
@@ -22,7 +22,19 @@
 
 - (RACSignal *)projects:(RACSignal *)query
 {
-    return [RACSignal return:self.projects];
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [self.addedProjects subscribeNext:^(NSArray *projects) {
+            NSMutableArray *projectSignals = [NSMutableArray arrayWithCapacity:projects.count];
+
+            for (Project *project in projects) {
+                [projectSignals addObject:[RACSignal return:project]];
+            }
+
+            [subscriber sendNext:projectSignals];
+        }];
+
+        return nil;
+    }] replayLazily];
 }
 
 - (RACSignal *)addProjectNamed:(NSString *)name
@@ -31,7 +43,7 @@
         NSNumber *ID = [NSNumber numberWithInt:self.nextID];
         Project *project = [[Project alloc] initWithID:ID name:name];
 
-        [self.projects addObject:project];
+        [self.addedProjects sendNext:@[project]];
 
         [subscriber sendNext:project];
         [subscriber sendCompleted];
