@@ -26,7 +26,7 @@
 
 - (RACSignal *)projects
 {
-    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSMutableDictionary *projectSubjects = [NSMutableDictionary dictionary];
 
         [[self.addedProjects
@@ -55,12 +55,12 @@
         }];
 
         return nil;
-    }] replayLazily];
+    }];
 }
 
 - (RACSignal *)addProjectNamed:(NSString *)name
 {
-    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSNumber *ID = [NSNumber numberWithInt:self.nextID];
         Project *project = [[Project alloc] initWithID:ID name:name];
 
@@ -72,12 +72,12 @@
         [subscriber sendCompleted];
 
         return nil;
-    }] subscribeOn:RACScheduler.scheduler] replayLazily];
+    }] subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)renameProject:(Project *)project to:(NSString *)newName
 {
-    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         Project *newProject = [[Project alloc] initWithID:project.ID name:newName];
 
         usleep(arc4random_uniform(1000));
@@ -88,12 +88,12 @@
         [subscriber sendCompleted];
 
         return nil;
-    }] subscribeOn:RACScheduler.scheduler] replayLazily];
+    }] subscribeOn:RACScheduler.scheduler];
 }
 
 - (RACSignal *)deleteProject:(Project *)project
 {
-    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         usleep(arc4random_uniform(1000));
 
         [self.deletedProjects sendNext:project];
@@ -102,7 +102,7 @@
         [subscriber sendCompleted];
 
         return nil;
-    }] subscribeOn:RACScheduler.scheduler] replayLazily];
+    }] subscribeOn:RACScheduler.scheduler];
 }
 
 - (int32_t)nextID
