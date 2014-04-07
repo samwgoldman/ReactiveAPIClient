@@ -29,30 +29,29 @@
     return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSMutableDictionary *projectSubjects = [NSMutableDictionary dictionary];
 
-        [self.addedProjects subscribeNext:^(NSArray *projects) {
-            NSMutableArray *projectSignals = [NSMutableArray arrayWithCapacity:projects.count];
+        [[self.addedProjects
+            bufferWithTime:0.1
+            onScheduler:RACScheduler.scheduler]
+            subscribeNext:^(RACTuple *buffer) {
+                NSMutableArray *projectSignals = [NSMutableArray arrayWithCapacity:buffer.count];
 
-            for (Project *project in projects) {
-                RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
-                [projectSubjects setObject:subject forKey:project.ID];
-                [projectSignals addObject:subject];
-            }
+                for (Project *project in buffer) {
+                    RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
+                    [projectSubjects setObject:subject forKey:project.ID];
+                    [projectSignals addObject:subject];
+                }
 
-            [subscriber sendNext:projectSignals];
+                [subscriber sendNext:projectSignals];
+            }];
+
+        [self.editedProjects subscribeNext:^(Project *project) {
+            RACSubject *subject = [projectSubjects objectForKey:project.ID];
+            [subject sendNext:project];
         }];
 
-        [self.editedProjects subscribeNext:^(NSArray *projects) {
-            for (Project *project in projects) {
-                RACSubject *subject = [projectSubjects objectForKey:project.ID];
-                [subject sendNext:project];
-            }
-        }];
-
-        [self.deletedProjects subscribeNext:^(NSArray *projects) {
-            for (Project *project in projects) {
-                RACSubject *subject = [projectSubjects objectForKey:project.ID];
-                [subject sendCompleted];
-            }
+        [self.deletedProjects subscribeNext:^(Project *project) {
+            RACSubject *subject = [projectSubjects objectForKey:project.ID];
+            [subject sendCompleted];
         }];
 
         return nil;
@@ -67,7 +66,7 @@
 
         usleep(arc4random_uniform(1000));
 
-        [self.addedProjects sendNext:@[project]];
+        [self.addedProjects sendNext:project];
 
         [subscriber sendNext:project];
         [subscriber sendCompleted];
@@ -83,7 +82,7 @@
 
         usleep(arc4random_uniform(1000));
 
-        [self.editedProjects sendNext:@[newProject]];
+        [self.editedProjects sendNext:newProject];
 
         [subscriber sendNext:newProject];
         [subscriber sendCompleted];
@@ -97,7 +96,7 @@
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         usleep(arc4random_uniform(1000));
 
-        [self.deletedProjects sendNext:@[project]];
+        [self.deletedProjects sendNext:project];
 
         [subscriber sendNext:project];
         [subscriber sendCompleted];
