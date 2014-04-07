@@ -52,6 +52,7 @@
         [self.deletedProjects subscribeNext:^(Project *project) {
             RACSubject *subject = [projectSubjects objectForKey:project.ID];
             [subject sendCompleted];
+            [projectSubjects removeObjectForKey:project.ID];
         }];
 
         return nil;
