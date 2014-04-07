@@ -12,7 +12,7 @@ describe(@"InMemoryAPIClient", ^{
         RACSignal *addProjectOne = [client addProjectNamed:@"Example One"];
         RACSignal *addProjectTwo = [client addProjectNamed:@"Project Two"];
 
-        RACSignal *projects = [[[[[client
+        RACSignal *projects = [[[[client
             projects]
             scanWithStart:@[]
             reduce:^NSArray *(NSArray *acc, NSArray *projectSignals) {
@@ -21,16 +21,18 @@ describe(@"InMemoryAPIClient", ^{
             flattenMap:^RACStream *(NSArray *projectSignals) {
                 return [RACSignal combineLatest:projectSignals];
             }]
-            map:^NSArray *(RACTuple *tuple) {
-                return tuple.allObjects;
-            }]
-            logAll];
+            map:^NSSet *(RACTuple *tuple) {
+                return [NSSet setWithArray:tuple.allObjects];
+            }];
 
-        [[RACSignal combineLatest:@[projects, addProjectOne, addProjectTwo]] subscribeNext:^(RACTuple *next) {
-            RACTupleUnpack(NSArray *projects, Project *projectOne, Project *projectTwo) = next;
-            expect(projects).to.equal(@[projectOne, projectTwo]);
-            done();
-        }];
+        [[[RACSignal
+            combineLatest:@[projects, addProjectOne, addProjectTwo]]
+            deliverOn:RACScheduler.mainThreadScheduler]
+            subscribeNext:^(RACTuple *next) {
+                RACTupleUnpack(NSSet *projects, Project *projectOne, Project *projectTwo) = next;
+                expect(projects).to.equal([NSSet setWithObjects:projectOne, projectTwo, nil]);
+                done();
+            }];
     });
 });
 

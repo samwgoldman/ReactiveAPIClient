@@ -17,6 +17,11 @@
     return self;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<Project ID=%@ name=%@>", self.ID, self.name];
+}
+
 - (BOOL)isEqualToProject:(Project *)project
 {
     return self.ID == project.ID;

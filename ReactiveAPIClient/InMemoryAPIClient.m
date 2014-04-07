@@ -39,9 +39,11 @@
 
 - (RACSignal *)addProjectNamed:(NSString *)name
 {
-    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSNumber *ID = [NSNumber numberWithInt:self.nextID];
         Project *project = [[Project alloc] initWithID:ID name:name];
+
+        usleep(arc4random_uniform(1000));
 
         [self.addedProjects sendNext:@[project]];
 
@@ -49,7 +51,7 @@
         [subscriber sendCompleted];
 
         return nil;
-    }] replayLazily];
+    }] subscribeOn:RACScheduler.scheduler] replayLazily];
 }
 
 - (int32_t)nextID
