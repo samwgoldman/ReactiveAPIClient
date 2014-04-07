@@ -3,6 +3,7 @@
 
 @interface InMemoryAPIClient ()
 @property (nonatomic, strong) RACSubject *addedProjects;
+@property (nonatomic, strong) RACSubject *editedProjects;
 @property (nonatomic, strong) RACSubject *deletedProjects;
 @property (readonly) int32_t nextID;
 @end
@@ -16,6 +17,7 @@
     self = [super init];
     if (self) {
         self.addedProjects = [RACSubject subject];
+        self.editedProjects = [RACSubject subject];
         self.deletedProjects = [RACSubject subject];
         _nextID = 0;
     }
@@ -32,16 +34,23 @@
 
             for (Project *project in projects) {
                 RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
-                [projectSubjects setObject:subject forKey:project];
+                [projectSubjects setObject:subject forKey:project.ID];
                 [projectSignals addObject:subject];
             }
 
             [subscriber sendNext:projectSignals];
         }];
 
+        [self.editedProjects subscribeNext:^(NSArray *projects) {
+            for (Project *project in projects) {
+                RACSubject *subject = [projectSubjects objectForKey:project.ID];
+                [subject sendNext:project];
+            }
+        }];
+
         [self.deletedProjects subscribeNext:^(NSArray *projects) {
             for (Project *project in projects) {
-                RACSubject *subject = [projectSubjects objectForKey:project];
+                RACSubject *subject = [projectSubjects objectForKey:project.ID];
                 [subject sendCompleted];
             }
         }];
@@ -61,6 +70,22 @@
         [self.addedProjects sendNext:@[project]];
 
         [subscriber sendNext:project];
+        [subscriber sendCompleted];
+
+        return nil;
+    }] subscribeOn:RACScheduler.scheduler] replayLazily];
+}
+
+- (RACSignal *)renameProject:(Project *)project to:(NSString *)newName
+{
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        Project *newProject = [[Project alloc] initWithID:project.ID name:newName];
+
+        usleep(arc4random_uniform(1000));
+
+        [self.editedProjects sendNext:@[newProject]];
+
+        [subscriber sendNext:newProject];
         [subscriber sendCompleted];
 
         return nil;

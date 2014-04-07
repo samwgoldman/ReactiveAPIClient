@@ -9,6 +9,8 @@
 
 - (RACSignal *)addProjectNamed:(NSString *)name;
 
+- (RACSignal *)renameProject:(Project *)project to:(NSString *)newName;
+
 - (RACSignal *)deleteProject:(Project *)project;
 
 @end
