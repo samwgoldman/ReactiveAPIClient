@@ -20,7 +20,7 @@
     return self;
 }
 
-- (RACSignal *)projects:(RACSignal *)query
+- (RACSignal *)projects
 {
     return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         [self.addedProjects subscribeNext:^(NSArray *projects) {

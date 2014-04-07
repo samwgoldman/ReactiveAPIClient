@@ -9,12 +9,11 @@ SpecBegin(InMemoryAPIClient)
 describe(@"InMemoryAPIClient", ^{
     it(@"lists projects", ^AsyncBlock {
         id<APIClient> client = [[InMemoryAPIClient alloc] init];
-        RACSubject *query = [RACBehaviorSubject behaviorSubjectWithDefaultValue:@""];
         RACSignal *addProjectOne = [client addProjectNamed:@"Example One"];
         RACSignal *addProjectTwo = [client addProjectNamed:@"Project Two"];
 
         RACSignal *projects = [[[[[client
-            projects:query]
+            projects]
             scanWithStart:@[]
             reduce:^NSArray *(NSArray *acc, NSArray *projectSignals) {
                 return [acc arrayByAddingObjectsFromArray:projectSignals];

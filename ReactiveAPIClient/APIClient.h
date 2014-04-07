@@ -3,7 +3,7 @@
 
 @protocol APIClient <NSObject>
 
-- (RACSignal *)projects:(RACSignal *)query;
+- (RACSignal *)projects;
 
 - (RACSignal *)addProjectNamed:(NSString *)name;
 
