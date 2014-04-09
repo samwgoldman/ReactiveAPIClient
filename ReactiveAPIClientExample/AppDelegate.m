@@ -32,6 +32,7 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
     self.tableView = [[NSTableView alloc] init];
     self.tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+    self.tableView.allowsMultipleSelection = YES;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 
@@ -76,6 +77,7 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
                 } else if (event.eventType == RACEventTypeCompleted) {
                     [self.IDs removeObject:ID];
                     [self.projects removeObjectForKey:ID];
+                    [self.tableView deselectAll:nil];
                 }
             }
 
@@ -219,12 +221,16 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
 - (void)deleteProject
 {
-    if (self.tableView.selectedRow != -1) {
-        Project *project = self.projects[self.IDs[self.tableView.selectedRow]];
+    NSArray *deletedIDs = [self.IDs objectsAtIndexes:self.tableView.selectedRowIndexes];
+    NSArray *deletedProjects = [self.projects objectsForKeys:deletedIDs notFoundMarker:NSNull.null];
 
-        [[self.client deleteProject:project] subscribeCompleted:^{
-        }];
+    NSMutableArray *deletions = [NSMutableArray arrayWithCapacity:deletedProjects.count];
+    for (Project *project in deletedProjects) {
+        [deletions addObject:[self.client deleteProject:project]];
     }
+
+    [[RACSignal merge:deletions] subscribeCompleted:^{
+    }];
 }
 
 @end
