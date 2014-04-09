@@ -1,12 +1,17 @@
 ## Overview
 
 This is a proof of concept for an API client using ReactiveCocoa. The main
-design idea is in `[APIClient -projects]`, which is a method that returns a
-signal of arrays of signals.
+design idea is in `-[APIClient projects]`, which is a method that returns a
+signal of signals.
 
 The outer signal updates when new projects have been added. Each inner signal
 updates when its associated project has been updated, and completes when its
 project has been deleted.
+
+Originally, this method returned a signal of arrays of signals, but this
+experiment convinced me that a signal of signals is more general. One can still
+work with a signal of arrays of signals by transforming the `projects` signal
+using `-[RACSignal bufferWithTime:onScheduler:]`.
 
 ## Guide to the code
 
