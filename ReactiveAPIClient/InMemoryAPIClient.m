@@ -30,9 +30,28 @@
         NSMutableDictionary *projectSubjects = [NSMutableDictionary dictionary];
 
         [self.addedProjects subscribeNext:^(Project *project) {
-            RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
-            [projectSubjects setObject:subject forKey:project.ID];
-            [subscriber sendNext:subject];
+            __block volatile int32_t subscriberCount = 0;
+            RACSubject *subject = [RACSubject subject];
+            RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+                if (OSAtomicIncrement32Barrier(&subscriberCount) == 1) {
+                    [projectSubjects setObject:subject forKey:project.ID];
+                }
+
+                [subscriber sendNext:project];
+                RACDisposable *subjectDisposable = [subject subscribe:subscriber];
+
+                RACCompoundDisposable *compoundDisposable = [RACCompoundDisposable compoundDisposable];
+                [compoundDisposable addDisposable:subjectDisposable];
+                [compoundDisposable addDisposable:[RACDisposable disposableWithBlock:^{
+                    if (OSAtomicDecrement32Barrier(&subscriberCount) == 0) {
+                        [projectSubjects removeObjectForKey:project.ID];
+                    }
+                }]];
+
+                return compoundDisposable;
+            }];
+
+            [subscriber sendNext:signal];
         }];
 
         [self.editedProjects subscribeNext:^(Project *project) {
@@ -43,7 +62,6 @@
         [self.deletedProjects subscribeNext:^(Project *project) {
             RACSubject *subject = [projectSubjects objectForKey:project.ID];
             [subject sendCompleted];
-            [projectSubjects removeObjectForKey:project.ID];
         }];
 
         return nil;

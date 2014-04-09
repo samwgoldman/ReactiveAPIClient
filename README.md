@@ -58,7 +58,4 @@ The subjects themselves are the inner signals, and when a user updates or
 deletes a project through the API client, the client looks up the subject by
 project ID and sends an update or completes the subject, respectively.
 
-Because the subjects are returned to the user directly as inner signals, the
-user could in theory mutate the signal using RACSubject methods.
-
-Is there a way to hide the subjects and return signals instead?
+Can this state be tracked more cleanly?
