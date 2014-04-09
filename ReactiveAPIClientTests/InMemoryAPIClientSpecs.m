@@ -23,17 +23,12 @@ describe(@"InMemoryAPIClient", ^{
                 return [NSSet setWithArray:tuple.allObjects];
             }];
 
-        RACSignal *listProjects = [[[[client
+        RACSignal *listProjects = [[[client
             projects]
-            scanWithStart:@[]
-            reduce:^NSArray *(NSArray *acc, NSArray *projectSignals) {
-                return [acc arrayByAddingObjectsFromArray:projectSignals];
-            }]
-            flattenMap:^RACStream *(NSArray *projectSignals) {
-                return [RACSignal combineLatest:projectSignals];
-            }]
-            map:^NSSet *(RACTuple *tuple) {
-                return [NSSet setWithArray:tuple.allObjects];
+            flatten]
+            scanWithStart:[NSSet set]
+            reduce:^NSSet *(NSSet *running, Project *project) {
+                return [running setByAddingObject:project];
             }];
 
         [[[RACSignal
@@ -49,23 +44,23 @@ describe(@"InMemoryAPIClient", ^{
     it(@"updates listed signals when projects are edited", ^AsyncBlock {
         id<APIClient> client = [[InMemoryAPIClient alloc] init];
 
-        RACSignal *listProjects = [client projects];
+        RACSignal *projects = [client projects];
         RACSignal *createProject = [client addProjectNamed:@"Example Project"];
 
-        [[[[[RACSignal
-            combineLatest:@[listProjects, createProject]]
-            take:1]
-            flattenMap:^RACStream *(RACTuple *update) {
-                RACTupleUnpack(NSArray *projectSignals, Project *project) = update;
-                RACSignal *projects = [RACSignal merge:projectSignals];
+        [[[[projects
+            zipWith:createProject]
+            flattenMap:^RACStream *(RACTuple *next) {
+                RACTupleUnpack(RACSignal *projectSignal, Project *project) = next;
                 RACSignal *updateProject = [client renameProject:project to:@"Updated Project"];
 
-                return [projects combineLatestWith:updateProject];
+                return [[projectSignal skip:1] zipWith:updateProject];
             }]
             deliverOn:RACScheduler.mainThreadScheduler]
-            subscribeNext:^(RACTuple *update) {
-                RACTupleUnpack(Project *updatedProject) = update;
+            subscribeNext:^(RACTuple *next) {
+                RACTupleUnpack(Project *updatedProject) = next;
                 expect(updatedProject.name).to.equal(@"Updated Project");
+            }
+            completed:^{
                 done();
             }];
     });
@@ -73,18 +68,16 @@ describe(@"InMemoryAPIClient", ^{
     it(@"completes listed signals when projects are deleted", ^AsyncBlock {
         id<APIClient> client = [[InMemoryAPIClient alloc] init];
 
-        RACSignal *listProjects = [client projects];
+        RACSignal *projects = [client projects];
         RACSignal *createProject = [client addProjectNamed:@"Example Project"];
 
-        [[[[RACSignal
-            combineLatest:@[listProjects, createProject]]
-            take:1]
-            flattenMap:^RACStream *(RACTuple *update) {
-                RACTupleUnpack(NSArray *projectSignals, Project *project) = update;
-                RACSignal *projects = [RACSignal combineLatest:projectSignals];
+        [[[projects
+            zipWith:createProject]
+            flattenMap:^RACStream *(RACTuple *next) {
+                RACTupleUnpack(RACSignal *projectSignal, Project *project) = next;
                 RACSignal *deleteProject = [client deleteProject:project];
 
-                return [projects combineLatestWith:deleteProject];
+                return [[projectSignal skip:1] zipWith:deleteProject];
             }]
             subscribeCompleted:^{
                 done();

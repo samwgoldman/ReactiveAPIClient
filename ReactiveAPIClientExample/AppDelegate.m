@@ -50,22 +50,27 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
     self.client = [[InMemoryAPIClient alloc] init];
 
-    [[[self.client projects] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *projectSignals) {
-        [projectSignals enumerateObjectsUsingBlock:^(RACSignal *signal, NSUInteger idx, BOOL *stop) {
-            Project *project = signal.first;
-            [self.projects addObject:project];
+    [[[[self.client
+        projects]
+        bufferWithTime:0.1
+        onScheduler:RACScheduler.scheduler]
+        deliverOn:RACScheduler.mainThreadScheduler]
+        subscribeNext:^(RACTuple *buffer) {
+            [buffer.allObjects enumerateObjectsUsingBlock:^(RACSignal *signal, NSUInteger idx, BOOL *stop) {
+                Project *project = signal.first;
+                [self.projects addObject:project];
 
-            [[signal deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(Project *next) {
-                [self.projects setObject:next atIndex:[self.projects indexOfObject:next]];
-                [self.tableView reloadData];
-            } completed:^{
-                [self.projects removeObject:project];
-                [self.tableView reloadData];
+                [[signal deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(Project *next) {
+                    [self.projects setObject:next atIndex:[self.projects indexOfObject:next]];
+                    [self.tableView reloadData];
+                } completed:^{
+                    [self.projects removeObject:project];
+                    [self.tableView reloadData];
+                }];
             }];
-        }];
 
-        [self.tableView reloadData];
-    }];
+            [self.tableView reloadData];
+        }];
 
     int numProjects = 100;
     NSMutableArray *addProjects = [NSMutableArray arrayWithCapacity:numProjects];

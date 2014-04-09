@@ -29,20 +29,11 @@
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSMutableDictionary *projectSubjects = [NSMutableDictionary dictionary];
 
-        [[self.addedProjects
-            bufferWithTime:0.1
-            onScheduler:RACScheduler.scheduler]
-            subscribeNext:^(RACTuple *buffer) {
-                NSMutableArray *projectSignals = [NSMutableArray arrayWithCapacity:buffer.count];
-
-                for (Project *project in buffer) {
-                    RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
-                    [projectSubjects setObject:subject forKey:project.ID];
-                    [projectSignals addObject:subject];
-                }
-
-                [subscriber sendNext:projectSignals];
-            }];
+        [self.addedProjects subscribeNext:^(Project *project) {
+            RACBehaviorSubject *subject = [RACBehaviorSubject behaviorSubjectWithDefaultValue:project];
+            [projectSubjects setObject:subject forKey:project.ID];
+            [subscriber sendNext:subject];
+        }];
 
         [self.editedProjects subscribeNext:^(Project *project) {
             RACSubject *subject = [projectSubjects objectForKey:project.ID];
