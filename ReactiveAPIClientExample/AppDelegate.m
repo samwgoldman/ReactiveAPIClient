@@ -50,24 +50,31 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
     self.client = [[InMemoryAPIClient alloc] init];
 
-    [[[[self.client
+    [[[[[[self.client
         projects]
+        map:^RACSignal *(RACSignal *projectSignal) {
+            RACSignal *first = [projectSignal take:1];
+            RACSignal *events = [projectSignal materialize];
+            return [first combineLatestWith:events];
+        }]
+        flatten]
         bufferWithTime:0.1
         onScheduler:RACScheduler.scheduler]
         deliverOn:RACScheduler.mainThreadScheduler]
         subscribeNext:^(RACTuple *buffer) {
-            [buffer.allObjects enumerateObjectsUsingBlock:^(RACSignal *signal, NSUInteger idx, BOOL *stop) {
-                Project *project = signal.first;
-                [self.projects addObject:project];
-
-                [[signal deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(Project *next) {
-                    [self.projects setObject:next atIndex:[self.projects indexOfObject:next]];
-                    [self.tableView reloadData];
-                } completed:^{
+            for (RACTuple *update in buffer) {
+                RACTupleUnpack(Project *project, RACEvent *event) = update;
+                if (event.eventType == RACEventTypeNext) {
+                    NSUInteger index = [self.projects indexOfObject:project];
+                    if (index == NSNotFound) {
+                        [self.projects addObject:event.value];
+                    } else {
+                        [self.projects setObject:event.value atIndex:index];
+                    }
+                } else if (event.eventType == RACEventTypeCompleted) {
                     [self.projects removeObject:project];
-                    [self.tableView reloadData];
-                }];
-            }];
+                }
+            }
 
             [self.tableView reloadData];
         }];
