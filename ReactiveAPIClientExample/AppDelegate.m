@@ -7,7 +7,8 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
 @interface AppDelegate () <NSTableViewDelegate, NSTableViewDataSource, NSToolbarDelegate>
 @property (nonatomic, strong) id<APIClient> client;
-@property (nonatomic, strong) NSMutableOrderedSet *projects;
+@property (nonatomic, strong) NSMutableOrderedSet *IDs;
+@property (nonatomic, strong) NSMutableDictionary *projects;
 @property (nonatomic, strong) NSTableView *tableView;
 @end
 
@@ -46,16 +47,21 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
     [scrollView setDocumentView:self.tableView];
     [contentView addSubview:scrollView];
 
-    self.projects = [NSMutableOrderedSet orderedSet];
+    self.IDs = [NSMutableOrderedSet orderedSet];
+    self.projects = [NSMutableDictionary dictionary];
 
     self.client = [[InMemoryAPIClient alloc] init];
 
     [[[[[[self.client
         projects]
         map:^RACSignal *(RACSignal *projectSignal) {
-            RACSignal *first = [projectSignal take:1];
+            RACSignal *ID = [[projectSignal
+                take:1]
+                map:^NSNumber *(Project *project) {
+                    return project.ID;
+                }];
             RACSignal *events = [projectSignal materialize];
-            return [first combineLatestWith:events];
+            return [ID combineLatestWith:events];
         }]
         flatten]
         bufferWithTime:0.1
@@ -63,16 +69,13 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
         deliverOn:RACScheduler.mainThreadScheduler]
         subscribeNext:^(RACTuple *buffer) {
             for (RACTuple *update in buffer) {
-                RACTupleUnpack(Project *project, RACEvent *event) = update;
+                RACTupleUnpack(NSNumber *ID, RACEvent *event) = update;
                 if (event.eventType == RACEventTypeNext) {
-                    NSUInteger index = [self.projects indexOfObject:project];
-                    if (index == NSNotFound) {
-                        [self.projects addObject:event.value];
-                    } else {
-                        [self.projects setObject:event.value atIndex:index];
-                    }
+                    [self.IDs addObject:ID];
+                    [self.projects setObject:event.value forKey:ID];
                 } else if (event.eventType == RACEventTypeCompleted) {
-                    [self.projects removeObject:project];
+                    [self.IDs removeObject:ID];
+                    [self.projects removeObjectForKey:ID];
                 }
             }
 
@@ -97,12 +100,12 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    return [self.projects[row] valueForKey:tableColumn.identifier];
+    return [self.projects[self.IDs[row]] valueForKey:tableColumn.identifier];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    Project *project = self.projects[row];
+    Project *project = self.projects[self.IDs[row]];
 
     [[self.client renameProject:project to:object] subscribeCompleted:^{
     }];
@@ -217,7 +220,7 @@ static NSString * const DeleteProjectToolbarItemIdentifier = @"DeleteProjectTool
 - (void)deleteProject
 {
     if (self.tableView.selectedRow != -1) {
-        Project *project = self.projects[self.tableView.selectedRow];
+        Project *project = self.projects[self.IDs[self.tableView.selectedRow]];
 
         [[self.client deleteProject:project] subscribeCompleted:^{
         }];
