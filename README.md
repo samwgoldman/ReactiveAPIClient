@@ -62,33 +62,3 @@ Because the subjects are returned to the user directly as inner signals, the
 user could in theory mutate the signal using RACSubject methods.
 
 Is there a way to hide the subjects and return signals instead?
-
-### Nested subscribers
-
-In order to use a signal of arrays of signals effectively, I had to use nested
-subscribers, which are an anti-pattern.
-
-ReactiveCocoa methods like `+merge:`, `+combineLatest:`, and `-flatten` are all
-useful for dealing with arrays of signals, but I couldn't not find any way to
-use them.
-
-Consider a subscriber that wants to maintain a NSMutableDictionary that
-contains the latest version of every project.
-
-```objective-c
-NSMutableDictionary *projects = [NSMutableDictionary dictionary];
-[[client projects] subscribeNext:^(NSArray *projectSignals) {
-    for (RACSignal *signal in projectSignals) {
-        Project *project = signal.first;
-        projects[project.ID] = project;
-
-        [signal subscribeNext:^(Project *update) {
-            projects[update.ID] = update;
-        } completed:^{
-            [projects removeObjectForKey:project.ID];
-        }];
-    }
-}];
-```
-
-How would I write the above code without nested subscribers?
